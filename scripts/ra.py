@@ -49,7 +49,7 @@ class Ra:
             minimap_params.extend(['-x', 'ava-pb'])
         minimap_params.extend([self.tgs_sequences, self.tgs_sequences])
 
-        overlaps = os.path.join(self.work_directory, 'overlaps.paf')
+        overlaps = os.path.join(self.work_directory, 'overlaps.paf.gz')
         try:
             overlaps_file = open(overlaps, 'w')
         except OSError:
@@ -57,7 +57,9 @@ class Ra:
             sys.exit(1)
 
         try:
-            p = subprocess.Popen(minimap_params, stdout=overlaps_file)
+            p0 = subprocess.Popen(minimap_params, stdout=subprocess.PIPE)
+            p = subprocess.Popen(['gzip', '-c'], stdin=p0.stdout, stdout=overlaps_file)
+            p0.stdout.close()
         except OSError:
             eprint('[Ra::run] error: unable to run minimap2!')
             sys.exit(1)
@@ -105,7 +107,7 @@ class Ra:
         minimap_params.extend(['-f 0.00001', '--dual=yes'])
         minimap_params.extend([preconstruction, self.tgs_sequences])
 
-        sensitive_overlaps = os.path.join(self.work_directory, 'sensitive_overlaps.paf')
+        sensitive_overlaps = os.path.join(self.work_directory, 'sensitive_overlaps.paf.gz')
         try:
             sensitive_overlaps_file = open(sensitive_overlaps, 'w')
         except OSError:
@@ -113,7 +115,9 @@ class Ra:
             sys.exit(1)
 
         try:
-            p = subprocess.Popen(minimap_params, stdout=sensitive_overlaps_file)
+            p0 = subprocess.Popen(minimap_params, stdout=subprocess.PIPE)
+            p = subprocess.Popen(['gzip', '-c'], stdin=p0.stdout, stdout=sensitive_overlaps_file)
+            p0.stdout.close()
         except OSError:
             eprint('[Ra::run] error: unable to run minimap2!')
             sys.exit(1)
@@ -159,7 +163,7 @@ class Ra:
             minimap_params.extend(['-x', 'map-pb'])
         minimap_params.extend([layout, self.tgs_sequences])
 
-        mappings = os.path.join(self.work_directory, 'mappings_iter0.paf')
+        mappings = os.path.join(self.work_directory, 'mappings_iter0.paf.gz')
         try:
             mappings_file = open(mappings, 'w')
         except OSError:
@@ -167,7 +171,9 @@ class Ra:
             sys.exit(1)
 
         try:
-            p = subprocess.Popen(minimap_params, stdout=mappings_file)
+            p0 = subprocess.Popen(minimap_params, stdout=subprocess.PIPE)
+            p = subprocess.Popen(['gzip', '-c'], stdin=p0.stdout, stdout=mappings_file)
+            p0.stdout.close()
         except OSError:
             eprint('[Ra::run] error: unable to run minimap2!')
             sys.exit(1)
@@ -204,7 +210,7 @@ class Ra:
         # second iteration
         minimap_params[-2] = consensus
 
-        mappings = os.path.join(self.work_directory, 'mappings_iter1.paf')
+        mappings = os.path.join(self.work_directory, 'mappings_iter1.paf.gz')
         try:
             mappings_file = open(mappings, 'w')
         except OSError:
@@ -212,7 +218,9 @@ class Ra:
             sys.exit(1)
 
         try:
-            p = subprocess.Popen(minimap_params, stdout=mappings_file)
+            p0 = subprocess.Popen(minimap_params, stdout=subprocess.PIPE)
+            p = subprocess.Popen(['gzip', '-c'], stdin=p0.stdout, stdout=mappings_file)
+            p0.stdout.close()
         except OSError:
             eprint('[Ra::run] error: unable to run minimap2!')
             sys.exit(1)
@@ -258,7 +266,7 @@ class Ra:
         minimap_params[-2] = consensus
         minimap_params[-1] = self.ngs_sequences
 
-        mappings = os.path.join(self.work_directory, 'mappings_iter2.paf')
+        mappings = os.path.join(self.work_directory, 'mappings_iter2.paf.gz')
         try:
             mappings_file = open(mappings, 'w')
         except OSError:
@@ -266,7 +274,9 @@ class Ra:
             sys.exit(1)
 
         try:
-            p = subprocess.Popen(minimap_params, stdout=mappings_file)
+            p0 = subprocess.Popen(minimap_params, stdout=subprocess.PIPE)
+            p = subprocess.Popen(['gzip', '-c'], stdin=p0.stdout, stdout=mappings_file)
+            p0.stdout.close()
         except OSError:
             eprint('[Ra::run] error: unable to run minimap2!')
             sys.exit(1)
